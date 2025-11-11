@@ -1,0 +1,5 @@
+courses = ["B.Tech", "M.Tech", "BCA", "MCA"]
+btech_specializations = ["GEN", "AI", "CY", "CE", "EE", "ME"]
+mtech_specializations = ["GEN", "AI", "CY", "CE", "EE", "ME"]
+bca_specializations = ["GEN", "AI", "CY"]
+mca_specializations = ["GEN", "AI", "CY"]
