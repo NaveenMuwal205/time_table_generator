@@ -35,69 +35,70 @@ def select_specialization_and_semesters() -> dict:
     selected_courses = choose_course()
     course_data = {}
 
-    for i, course in enumerate(selected_courses):
-        with st.expander(f"📘 {course}", expanded=False):
+    # Display selected courses in a horizontal row (3 per row)
+    if selected_courses:
+        st.markdown("---")
+        st.subheader("📚 Selected Courses Configuration")
 
-            # --- Specializations ---
-            match course:
-                case "B.Tech":
-                    specs = st.multiselect(
-                        "B.Tech Specializations",
-                        btech_specializations,
-                        key=f"btech_specs_{i}"
-                    )
-                    num_semesters = 8
-                case "M.Tech":
-                    specs = st.multiselect(
-                        "M.Tech Specializations",
-                        mtech_specializations,
-                        key=f"mtech_specs_{i}"
-                    )
-                    num_semesters = 4
-                case "BCA":
-                    specs = st.multiselect(
-                        "BCA Specializations",
-                        bca_specializations,
-                        key=f"bca_specs_{i}"
-                    )
-                    num_semesters = 6
-                case "MCA":
-                    specs = st.multiselect(
-                        "MCA Specializations",
-                        mca_specializations,
-                        key=f"mca_specs_{i}"
-                    )
-                    num_semesters = 6
-                case _:
-                    specs = []
-                    num_semesters = 0
+        # Create columns for horizontal layout (3 courses per row)
+        cols = st.columns(4)
 
-            # --- Semesters section ---
-            if specs:
-                st.markdown("---")
-                st.markdown(
-                    f"<div class='course-title'>{course} Semesters</div>",
-                    unsafe_allow_html=True
-                )
-                selected_semesters = render_semesters(course, num_semesters, f"{course}_{i}")
+        for i, course in enumerate(selected_courses):
+            col_index = i % 4  # Cycle through 3 columns
 
-                course_data[course] = {
-                    "specializations": specs,
-                    "semesters": selected_semesters
-                }
+            with cols[col_index]:
+                # Create expander inside the column
+                with st.expander(f"📘 {course}", expanded=False):
+                    # --- Specializations ---
+                    match course:
+                        case "B.Tech":
+                            specs = st.multiselect(
+                                "B.Tech Specializations",
+                                btech_specializations,
+                                key=f"btech_specs_{i}"
+                            )
+                            num_semesters = 8
+                        case "M.Tech":
+                            specs = st.multiselect(
+                                "M.Tech Specializations",
+                                mtech_specializations,
+                                key=f"mtech_specs_{i}"
+                            )
+                            num_semesters = 4
+                        case "BCA":
+                            specs = st.multiselect(
+                                "BCA Specializations",
+                                bca_specializations,
+                                key=f"bca_specs_{i}"
+                            )
+                            num_semesters = 6
+                        case "MCA":
+                            specs = st.multiselect(
+                                "MCA Specializations",
+                                mca_specializations,
+                                key=f"mca_specs_{i}"
+                            )
+                            num_semesters = 6
+                        case _:
+                            specs = []
+                            num_semesters = 0
 
-            st.markdown("</div>", unsafe_allow_html=True)
+                    # --- Semesters section ---
+                    if specs:
+                        st.markdown("---")
+                        st.markdown(f"**{course} Semesters**")
+                        selected_semesters = render_semesters(course, num_semesters, f"{course}_{i}")
+
+                        course_data[course] = {
+                            "specializations": specs,
+                            "semesters": selected_semesters
+                        }
 
     # --- Add Preloaded Template button ---
     st.markdown("---")
     if st.button("➕ Add Preloaded Template", use_container_width=True):
         if course_data:
             st.success("Templates Generated!")
-            st.write("### Selected Configuration:")
-            for course, data in course_data.items():
-                st.write(f"**{course}**")
-                st.write(f"• Specializations: {', '.join(data['specializations'])}")
-                st.write(f"• Semesters: {', '.join(map(str, data['semesters']))}")
 
             # 👉 store in session_state for sidebar
             st.session_state["generated_classes"] = []

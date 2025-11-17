@@ -15,9 +15,9 @@ def page_title():
 
 def main():
     init_md()
+    slider()
     page_title()
     select_specialization_and_semesters()
-    slider()
     class_tables()
     st.markdown("<div style='height:300px;'></div>", unsafe_allow_html=True)
 
