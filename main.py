@@ -1,8 +1,6 @@
 import streamlit as st
 from src.configs.markdowns import init_md
-from src.modules.editable_tables import class_tables
-from src.modules.left_slider import slider
-from src.modules.render_sems import select_specialization_and_semesters
+from src.components.left_slider import slider
 
 st.set_page_config(layout="wide")
 
@@ -15,10 +13,13 @@ def page_title():
 
 def main():
     init_md()
-    slider()
     page_title()
-    select_specialization_and_semesters()
-    class_tables()
+    slider("SmartMatrix AI", {
+    "B.Tech": ["GEN", "AI", "CY", "CE", "EE", "ME"],
+    "M.Tech": ["GEN", "AI", "CY", "CE", "EE", "ME"],
+    "BCA": ["GEN", "AI", "CY"],
+    "MCA": ["GEN", "AI", "CY"]
+})
     st.markdown("<div style='height:300px;'></div>", unsafe_allow_html=True)
 
 
